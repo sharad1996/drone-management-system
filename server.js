@@ -17,9 +17,15 @@ var droneData = [], central = '', updateData = [];
 
 //start socket programming
 io.on('connection', function (socket) {
+  
   //create central server
   console.log(socket.id + " " + "connected");
 
+  //send starting geolocation
+  socket.on('send', function (data) {
+		socket.emit('load', data);
+  });
+  
   //disconnect drone
   socket.on('disconnect', function () {
     updateData = droneData.filter(d => d.socketId !== socket.id);
