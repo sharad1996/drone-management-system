@@ -21,6 +21,10 @@ io.on('connection', function (socket) {
   //create central server
   console.log(socket.id + " " + "connected");
 
+  if(_.isEmpty(droneData)){
+    central = socket.id;
+  }
+
   //send starting geolocation
   socket.on('send', function (data) {
 		socket.emit('load', data);
@@ -31,6 +35,13 @@ io.on('connection', function (socket) {
     const d = {...data, socketId: socket.id}
     socket.emit('show-to-user', data);
     droneData.push(d);
+    socket.broadcast.to(central).emit('show', data);
+  });
+
+  //send new unmatch updated info of all drones
+  socket.on('send-update-data', function (data) {
+    socket.emit('show-to-user', data);
+    socket.broadcast.to(central).emit('show', data);
   });
   
   //disconnect drone
