@@ -26,6 +26,13 @@ io.on('connection', function (socket) {
 		socket.emit('load', data);
   });
   
+  //send updated info of all drones
+  socket.on('send-data', function (data) {
+    const d = {...data, socketId: socket.id}
+    socket.emit('show-to-user', data);
+    droneData.push(d);
+  });
+  
   //disconnect drone
   socket.on('disconnect', function () {
     updateData = droneData.filter(d => d.socketId !== socket.id);
