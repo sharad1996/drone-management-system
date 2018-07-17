@@ -1,7 +1,7 @@
 $(function() {
 	// generate unique user id
 	var droneId = Math.random().toString(16).substring(2,15);
-	var socket = io.connect('https://ae49a282.ngrok.io');
+	var socket = io.connect('https://afb466da.ngrok.io');
 	var infoList = $('#infoList');
 	var connects = {}, droneData  = [];
 
@@ -23,14 +23,14 @@ $(function() {
 
 	//show only drone data at socket server or browser
 	socket.on('show-to-user', function(data) {
-		infoList.append("<p class='infolist' >:>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + 
-		" " + "Longitude: " + data.longitude + " " + "speed: " + data.speed + "<br></p>" );
+		infoList.append("<p class='infolist' > :>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + 
+		" " + "Longitude: " + data.longitude + " " + "speed: " + data.speed + "<br></p>" ).attr('id', data.droneId);
 	});
 
 	//show all drone data at central server
 	socket.on('show', function(data) {
-		infoList.append("<p class='infolist-drone' >:>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + 
-		" " + "Longitude: " + data.longitude + " " + "speed: " + data.speed + "<br></p>");
+		infoList.append("<p class='infolist-drone' > :>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + 
+		" " + "Longitude: " + data.longitude + " " + "speed: " + data.speed + "<br></p>").attr('id', data.droneId);
 	});
 
 
@@ -44,13 +44,12 @@ $(function() {
 		var lat =  position.coords.latitude;
 		var lng =  position.coords.longitude;
 		var speed =  position.coords.speed;
-		var data  = {droneId: droneId, latitude: lat, longitude: lng, speed: speed};
+		var timestamp = position.coords.timestamp;
+		var data  = {droneId: droneId, latitude: lat, longitude: lng, speed: speed, timestamp: timestamp};
 		droneData.map(d => {
 			if(d.droneId === data.droneId && d.latitude === data.latitude && d.longitude === d.longitude){
-				$('.infolist').addClass('not-active');
-				$('infolist-drone').addClass('not-active');
+				$(`#${d.droneId}`).addClass('not-active');
 			} else {
-				infoList.remove();
 				socket.emit('send-update-data', data);
 			}
 		});
@@ -61,7 +60,8 @@ $(function() {
 		var lat =  position.coords.latitude;
 		var lng =  position.coords.longitude;
 		var speed =  position.coords.speed;
-		var data  = {droneId: droneId, latitude: lat, longitude: lng, speed: speed};
+		var timestamp = position.coords.timestamp;
+		var data  = {droneId: droneId, latitude: lat, longitude: lng, speed: speed, timestamp: timestamp};
 		droneData.push(data);
 		socket.emit('send-data', data);
 	}
