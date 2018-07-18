@@ -19,26 +19,28 @@ All of the clients can emit events to the server, and the server will relay what
 
 
 # How to run
-First clone the repsitory from github:
+- Extract the zip file:
+- cd drone-management
 
-cd drone-management
+Run project using Docker:
+- docker build -t drone-management
+- docker images
+- docker run -p 49160:8080 -d drone-management
 
-After that install required packages run ;
-npm install
 
-For run this application use:
-node server.js
+Run project using localhost:
+- npm install
+- node server.js
+- open browser and run : localhost:8080
 
-open browser and run : localhost:8080
 
-For making server to your system i use ngrok:
-./ngrok http 8080
-
-Replace ngrok https url at application.js file line 4 for running your application as central server. 
+I Run project using ngrok:
+- ./ngrok http 8080
+- Replace ngrok https url at application.js file line 4 for running your application as    central server. 
+- open browser and run : ngrok https url
 
 
 # Requirements
-
 - Mac OS X, Linux, Windows;
 - It's tested to run with node v8.11.1 or latest;
 

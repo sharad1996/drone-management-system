@@ -23,8 +23,7 @@ $(function() {
 	}
 
 	//show only drone data at socket server or browser
-	socket.on('show-to-user', function(data) {
-		console.log('data',data, data.droneId);	
+	socket.on('show-to-user', function(data) {	
 		if ($(`#${data.droneId}`).length) {
 			$(`#${data.droneId}`).text(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + " " + "Longitude: " + data.longitude + " " + "speed: " + data.speed);
 		}
@@ -35,8 +34,7 @@ $(function() {
 	});
 
 	//show all drone data at central server
-	socket.on('show', function(data) {
-		console.log('data',data, data.droneId);	
+	socket.on('show', function(data) {	
 		if ($(`#${data.droneId}`).length) {
 			$(`#${data.droneId}`).text(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + " " + "Longitude: " + data.longitude + " " + "speed: " + data.speed);
 		}
