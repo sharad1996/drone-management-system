@@ -1,7 +1,7 @@
 $(function() {
 	// generate unique user id
 	var droneId = Math.random().toString(16).substring(2,15);
-	var socket = io.connect('https://18c11989.ngrok.io');
+	var socket = io.connect('https://40418b94.ngrok.io');
 	var infoList = $('#infoList');
 	var connects = {}, droneData  = [];
 	var options = { enableHighAccuracy: true, maximumAge: Infinity, timeout: Infinity};
@@ -24,14 +24,26 @@ $(function() {
 
 	//show only drone data at socket server or browser
 	socket.on('show-to-user', function(data) {
-		infoList.append(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + 
-		" " + "Longitude: " + data.longitude + " " + "speed: " + data.speed + "<br>" );
+		console.log('data',data, data.droneId);	
+		if ($(`#${data.droneId}`).length) {
+			$(`#${data.droneId}`).text(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + " " + "Longitude: " + data.longitude + " " + "speed: " + data.speed);
+		}
+		else {
+			var para1 = $('<p>').attr('id', data.droneId).text(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + " " + "Longitude: " + data.longitude + " " + "speed: " + data.speed);
+			infoList.append(para1);
+		}
 	});
 
 	//show all drone data at central server
 	socket.on('show', function(data) {
-		infoList.append(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + 
-		" " + "Longitude: " + data.longitude + " " + "speed: " + data.speed + "<br>");
+		console.log('data',data, data.droneId);	
+		if ($(`#${data.droneId}`).length) {
+			$(`#${data.droneId}`).text(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + " " + "Longitude: " + data.longitude + " " + "speed: " + data.speed);
+		}
+		else {
+			var para1 = $('<p>').attr('id', data.droneId).text(":>" + " " + "DroneId: " + data.droneId + " " + "Latitude: " + data.latitude + " " + "Longitude: " + data.longitude + " " + "speed: " + data.speed);
+			infoList.append(para1);
+		}
 	});
 
 
@@ -48,7 +60,7 @@ $(function() {
 		var data  = {droneId: droneId, latitude: lat, longitude: lng, speed: speed};
 		droneData.map(d => {
 			if(d.droneId === data.droneId && d.latitude === data.latitude && d.longitude === d.longitude){
-				infoList.addClass('not-active');
+				$(`#${data.droneId}`).addClass('not-active');
 			} else {
 				socket.emit('send-update-data', data);
 			}

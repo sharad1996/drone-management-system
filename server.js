@@ -35,7 +35,6 @@ io.on('connection', function (socket) {
     const d = {...data, socketId: socket.id}
     socket.emit('show-to-user', data);
     droneData.push(d);
-    console.log("droneData....",droneData);
     socket.broadcast.to(central).emit('show', data);
   });
 
